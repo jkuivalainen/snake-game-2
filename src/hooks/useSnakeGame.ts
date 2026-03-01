@@ -73,6 +73,7 @@ export const useSnakeGame = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
+  const [milestoneFlash, setMilestoneFlash] = useState(false);
   const [highScore, setHighScore] = useState(() => {
     const saved = localStorage.getItem("snake-high-score");
     return saved ? parseInt(saved) : 0;
@@ -173,6 +174,13 @@ export const useSnakeGame = () => {
             setHighScore(newScore);
             localStorage.setItem("snake-high-score", String(newScore));
           }
+          // Trigger flash on every 5-point milestone crossing
+          const prevMilestone = Math.floor(prev / 5);
+          const newMilestone = Math.floor(newScore / 5);
+          if (newMilestone > prevMilestone && newScore > 0) {
+            setMilestoneFlash(true);
+            setTimeout(() => setMilestoneFlash(false), 800);
+          }
           return newScore;
         });
         // Respawn only the eaten tile
@@ -199,6 +207,7 @@ export const useSnakeGame = () => {
     highScore,
     isRunning,
     gameOver,
+    milestoneFlash,
     gridSize: GRID_SIZE,
     startGame,
     resetGame,

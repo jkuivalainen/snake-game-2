@@ -62,6 +62,12 @@
   }
 }
 
+@keyframes tuomas-flash {
+  /* Rapid strobe: 8 on/off cycles over ~800ms */
+  0%, 11%, 22%, 33%, 44%, 55%, 66%, 77%, 88%, 100% { opacity: 1; }
+  5.5%, 16.5%, 27.5%, 38.5%, 49.5%, 60.5%, 71.5%, 82.5% { opacity: 0; }
+}
+
 @layer utilities {
   .font-pixel {
     font-family: 'Press Start 2P', cursive;
