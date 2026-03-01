@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 220 20% 6%;
+    --foreground: 120 100% 70%;
+
+    --card: 220 20% 10%;
+    --card-foreground: 120 100% 70%;
+
+    --popover: 220 20% 10%;
+    --popover-foreground: 120 100% 70%;
+
+    --primary: 120 100% 50%;
+    --primary-foreground: 220 20% 6%;
+
+    --secondary: 280 100% 60%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 220 15% 15%;
+    --muted-foreground: 120 30% 50%;
+
+    --accent: 50 100% 55%;
+    --accent-foreground: 220 20% 6%;
+
+    --destructive: 0 80% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 120 100% 25%;
+    --input: 120 100% 25%;
+    --ring: 120 100% 50%;
+
+    --radius: 0.25rem;
+
+    --neon-glow: 0 0 10px hsl(120 100% 50% / 0.5), 0 0 30px hsl(120 100% 50% / 0.2);
+    --neon-glow-strong: 0 0 10px hsl(120 100% 50% / 0.8), 0 0 40px hsl(120 100% 50% / 0.4), 0 0 80px hsl(120 100% 50% / 0.1);
+    --food-glow: 0 0 10px hsl(0 80% 55% / 0.8), 0 0 30px hsl(0 80% 55% / 0.3);
+
+    --sidebar-background: 220 20% 8%;
+    --sidebar-foreground: 120 100% 70%;
+    --sidebar-primary: 120 100% 50%;
+    --sidebar-primary-foreground: 220 20% 6%;
+    --sidebar-accent: 220 15% 15%;
+    --sidebar-accent-foreground: 120 100% 70%;
+    --sidebar-border: 120 100% 25%;
+    --sidebar-ring: 120 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Space Mono', monospace;
+  }
+}
+
+@layer utilities {
+  .font-pixel {
+    font-family: 'Press Start 2P', cursive;
+  }
+
+  .neon-text {
+    text-shadow: var(--neon-glow);
+  }
+
+  .neon-text-strong {
+    text-shadow: var(--neon-glow-strong);
+  }
+
+  .neon-border {
+    box-shadow: var(--neon-glow), inset var(--neon-glow);
+  }
+}

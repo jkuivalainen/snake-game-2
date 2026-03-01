@@ -1,0 +1,33 @@
+import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from "lucide-react";
+
+interface MobileControlsProps {
+  onDirection: (dir: "UP" | "DOWN" | "LEFT" | "RIGHT") => void;
+  currentDirection: string;
+}
+
+const MobileControls: React.FC<MobileControlsProps> = ({ onDirection, currentDirection }) => {
+  const btn = (dir: "UP" | "DOWN" | "LEFT" | "RIGHT", icon: React.ReactNode) => (
+    <button
+      onClick={() => {
+        const opposite: Record<string, string> = { UP: "DOWN", DOWN: "UP", LEFT: "RIGHT", RIGHT: "LEFT" };
+        if (opposite[dir] !== currentDirection) onDirection(dir);
+      }}
+      className="w-14 h-14 flex items-center justify-center rounded-lg border border-primary/40 bg-muted/50 text-primary active:bg-primary/20 transition-colors"
+    >
+      {icon}
+    </button>
+  );
+
+  return (
+    <div className="grid grid-cols-3 gap-1 w-fit mx-auto mt-4 md:hidden">
+      <div />
+      {btn("UP", <ArrowUp size={24} />)}
+      <div />
+      {btn("LEFT", <ArrowLeft size={24} />)}
+      {btn("DOWN", <ArrowDown size={24} />)}
+      {btn("RIGHT", <ArrowRight size={24} />)}
+    </div>
+  );
+};
+
+export default MobileControls;
