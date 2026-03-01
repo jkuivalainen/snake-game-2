@@ -5,7 +5,8 @@ import MobileControls from "@/components/MobileControls";
 const Index = () => {
   const {
     snake,
-    food,
+    foods,
+    lastEaten,
     score,
     highScore,
     isRunning,
@@ -18,6 +19,17 @@ const Index = () => {
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen gap-6 px-4 py-8 select-none">
+      <div className="flex flex-col items-center gap-0.5">
+        <div style={{ border: '2.5px solid #e5e5e5', padding: '3px 8px' }}>
+          <span style={{ fontSize: '0.85rem', fontWeight: 900, letterSpacing: '0.35em' }}>
+            sanoma
+          </span>
+        </div>
+        <div style={{ fontSize: '0.65rem', fontStyle: 'italic', color: '#e5e5e5' }}>
+          Aina tulee sanomista.
+        </div>
+      </div>
+
       <h1 className="font-pixel text-2xl md:text-4xl text-primary neon-text-strong tracking-wider">
         SNAKE
       </h1>
@@ -29,9 +41,12 @@ const Index = () => {
         <div className="text-muted-foreground">
           BEST <span className="text-accent neon-text ml-2">{highScore}</span>
         </div>
+        <div className="text-muted-foreground">
+          EATEN <span className="text-primary neon-text ml-2">{lastEaten ?? '—'}</span>
+        </div>
       </div>
 
-      <GameBoard snake={snake} food={food} gridSize={gridSize} />
+      <GameBoard snake={snake} foods={foods} gridSize={gridSize} />
 
       {!isRunning && (
         <button

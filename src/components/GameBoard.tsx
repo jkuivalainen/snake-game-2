@@ -1,16 +1,17 @@
 import React from "react";
+import type { FoodItem } from "@/hooks/useSnakeGame";
 
 type Position = { x: number; y: number };
 
 interface GameBoardProps {
   snake: Position[];
-  food: Position;
+  foods: FoodItem[];
   gridSize: number;
 }
 
 const CELL_SIZE = 20;
 
-const GameBoard: React.FC<GameBoardProps> = ({ snake, food, gridSize }) => {
+const GameBoard: React.FC<GameBoardProps> = ({ snake, foods, gridSize }) => {
   const boardSize = gridSize * CELL_SIZE;
 
   return (
@@ -54,18 +55,30 @@ const GameBoard: React.FC<GameBoardProps> = ({ snake, food, gridSize }) => {
         />
       ))}
 
-      {/* Food */}
-      <div
-        className="absolute rounded-full animate-pulse"
-        style={{
-          left: food.x * CELL_SIZE + 2,
-          top: food.y * CELL_SIZE + 2,
-          width: CELL_SIZE - 4,
-          height: CELL_SIZE - 4,
-          backgroundColor: "hsl(0 80% 55%)",
-          boxShadow: "var(--food-glow)",
-        }}
-      />
+      {/* Brand food tiles */}
+      {foods.map((f) => (
+        <div
+          key={f.brand.label}
+          style={{
+            position: 'absolute',
+            left: f.x * CELL_SIZE + 1,
+            top: f.y * CELL_SIZE + 1,
+            width: CELL_SIZE - 2,
+            height: CELL_SIZE - 2,
+            backgroundColor: f.brand.bg,
+            borderRadius: 3,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: f.brand.label.length > 3 ? 5 : 6,
+            fontWeight: 'bold',
+            color: f.brand.fg,
+            fontFamily: 'Helvetica Neue, Arial, sans-serif',
+          }}
+        >
+          {f.brand.label}
+        </div>
+      ))}
     </div>
   );
 };
