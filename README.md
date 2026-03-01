@@ -1,73 +1,42 @@
-# Welcome to your Lovable project
+# Snake Game 2
 
-## Project info
+A browser-based Snake game with Sanoma branding, built with React, TypeScript, and Vite.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+**Live:** https://jkuivalainen.github.io/snake-game-2/
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- Classic snake gameplay with increasing speed as your score grows
+- **3 branded food tiles** — HS.fi (1 pt), IS.fi (2 pts), B2B (3 pts) — each respawns independently when eaten
+- Sanoma logo and "Aina tulee sanomista." tagline
+- EATEN counter showing the last consumed brand
+- Persistent high score via localStorage
+- Keyboard (arrow keys / WASD) and on-screen mobile controls
+- Retro neon pixel aesthetic
 
-**Use Lovable**
+## Tech stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- React 18 + TypeScript
+- Vite
+- Tailwind CSS + shadcn/ui
+- Vitest for unit tests
+- GitHub Actions → GitHub Pages for deployment
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Development
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+npm install
+npm run dev       # http://localhost:5173
+npm run test      # run tests
+npm run build     # production build
 ```
 
-**Edit a file directly in GitHub**
+## Project structure
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```
+src/
+  hooks/useSnakeGame.ts    # game loop, brand/food logic, state
+  components/GameBoard.tsx # board rendering with brand tiles
+  pages/Index.tsx          # layout: logo, scoreboard, controls
+  test/useSnakeGame.test.ts
+```
