@@ -11,30 +11,26 @@ interface GameBoardProps {
 
 const CELL_SIZE = 20;
 
+/**
+ * Renders the snake game board: grid lines (via CSS background),
+ * snake segments, and brand food tiles.
+ */
 const GameBoard: React.FC<GameBoardProps> = ({ snake, foods, gridSize }) => {
   const boardSize = gridSize * CELL_SIZE;
 
   return (
     <div
       className="relative border-2 border-primary neon-border rounded-sm"
-      style={{ width: boardSize, height: boardSize }}
+      style={{
+        width: boardSize,
+        height: boardSize,
+        backgroundImage: `
+          repeating-linear-gradient(to right, hsl(var(--primary)/0.04) 1px, transparent 1px),
+          repeating-linear-gradient(to bottom, hsl(var(--primary)/0.04) 1px, transparent 1px)
+        `,
+        backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`,
+      }}
     >
-      {/* Grid lines */}
-      <div className="absolute inset-0 opacity-[0.04]">
-        {Array.from({ length: gridSize }).map((_, i) => (
-          <React.Fragment key={i}>
-            <div
-              className="absolute top-0 bottom-0 border-l border-primary"
-              style={{ left: i * CELL_SIZE }}
-            />
-            <div
-              className="absolute left-0 right-0 border-t border-primary"
-              style={{ top: i * CELL_SIZE }}
-            />
-          </React.Fragment>
-        ))}
-      </div>
-
       {/* Snake */}
       {snake.map((segment, index) => (
         <div
@@ -83,4 +79,4 @@ const GameBoard: React.FC<GameBoardProps> = ({ snake, foods, gridSize }) => {
   );
 };
 
-export default GameBoard;
+export default React.memo(GameBoard);

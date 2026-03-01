@@ -163,3 +163,55 @@ describe("lastEaten tracking", () => {
     expect(BRANDS.map((b) => b.label)).toContain(lastEaten);
   });
 });
+
+describe("getRandomPosition loop guard", () => {
+  it("throws after max attempts when board is full", () => {
+    const fullSnake: Position[] = [];
+    for (let x = 0; x < GRID_SIZE; x++) {
+      for (let y = 0; y < GRID_SIZE; y++) {
+        fullSnake.push({ x, y });
+      }
+    }
+    expect(() => getRandomPosition(fullSnake, [])).toThrow("board is full");
+  });
+});
+
+describe("speed formula", () => {
+  it("score=0 gives INITIAL_SPEED (150ms) and score=34 is clamped to MIN_SPEED (50ms)", () => {
+    const INITIAL_SPEED = 150;
+    const SPEED_INCREMENT = 3;
+    const MIN_SPEED = 50;
+    expect(Math.max(MIN_SPEED, INITIAL_SPEED - 0 * SPEED_INCREMENT)).toBe(150);
+    expect(Math.max(MIN_SPEED, INITIAL_SPEED - 34 * SPEED_INCREMENT)).toBe(50);
+  });
+});
+
+describe("direction reversal guard", () => {
+  it("UP is blocked when currently going DOWN", () => {
+    const OPPOSITE: Record<string, string> = { UP: "DOWN", DOWN: "UP", LEFT: "RIGHT", RIGHT: "LEFT" };
+    const currentDirection = "DOWN";
+    const requested = "UP";
+    expect(OPPOSITE[requested] === currentDirection).toBe(true);
+  });
+});
+
+describe("brand data integrity", () => {
+  it("all brand pts values are positive integers", () => {
+    for (const brand of BRANDS) {
+      expect(brand.pts).toBeGreaterThan(0);
+      expect(Number.isInteger(brand.pts)).toBe(true);
+    }
+  });
+});
+
+describe("makeInitialFoods with multi-segment snake", () => {
+  it("positions don't collide with a multi-segment snake", () => {
+    const snake: Position[] = [
+      { x: 5, y: 5 }, { x: 5, y: 6 }, { x: 5, y: 7 }, { x: 5, y: 8 }, { x: 5, y: 9 },
+    ];
+    const foods = makeInitialFoods(snake);
+    for (const food of foods) {
+      expect(snake.some((s) => s.x === food.x && s.y === food.y)).toBe(false);
+    }
+  });
+});

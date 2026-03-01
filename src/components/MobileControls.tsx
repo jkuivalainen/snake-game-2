@@ -1,16 +1,26 @@
+import React from "react";
 import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from "lucide-react";
+import type { Direction } from "@/hooks/useSnakeGame";
+
+/** Prevents the snake from reversing direction — created once at module scope. */
+const OPPOSITE_DIRECTION: Record<Direction, Direction> = {
+  UP: "DOWN", DOWN: "UP", LEFT: "RIGHT", RIGHT: "LEFT",
+};
 
 interface MobileControlsProps {
-  onDirection: (dir: "UP" | "DOWN" | "LEFT" | "RIGHT") => void;
-  currentDirection: string;
+  onDirection: (dir: Direction) => void;
+  currentDirection: Direction;
 }
 
+/**
+ * On-screen D-pad for mobile devices. Blocks reversals so the snake
+ * cannot turn 180° and immediately collide with itself.
+ */
 const MobileControls: React.FC<MobileControlsProps> = ({ onDirection, currentDirection }) => {
-  const btn = (dir: "UP" | "DOWN" | "LEFT" | "RIGHT", icon: React.ReactNode) => (
+  const btn = (dir: Direction, icon: React.ReactNode) => (
     <button
       onClick={() => {
-        const opposite: Record<string, string> = { UP: "DOWN", DOWN: "UP", LEFT: "RIGHT", RIGHT: "LEFT" };
-        if (opposite[dir] !== currentDirection) onDirection(dir);
+        if (OPPOSITE_DIRECTION[dir] !== currentDirection) onDirection(dir);
       }}
       className="w-14 h-14 flex items-center justify-center rounded-lg border border-primary/40 bg-muted/50 text-primary active:bg-primary/20 transition-colors"
     >
@@ -30,4 +40,4 @@ const MobileControls: React.FC<MobileControlsProps> = ({ onDirection, currentDir
   );
 };
 
-export default MobileControls;
+export default React.memo(MobileControls);

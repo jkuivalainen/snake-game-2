@@ -1,28 +1,45 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
-type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
+/** The four possible movement directions. */
+export type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
 type Position = { x: number; y: number };
 
+/**
+ * One entry in the BRANDS roster.
+ * `bg`/`fg` are CSS colour strings; `pts` is the score awarded on eat.
+ */
 export const BRANDS = [
   { label: 'HS.fi', bg: '#0072bb', fg: '#fff',    pts: 1 },
   { label: 'IS.fi', bg: '#da2128', fg: '#fff',    pts: 2 },
   { label: 'B2B',   bg: '#FFCC00', fg: '#1a1a1a', pts: 3 },
 ] as const;
 
+/** A single brand tuple (one row from {@link BRANDS}). */
 export type Brand = typeof BRANDS[number];
+/** A food tile: grid position plus its associated brand. */
 export type FoodItem = Position & { brand: Brand };
 
 const GRID_SIZE = 20;
-const INITIAL_SPEED = 150;
-const SPEED_INCREMENT = 3;
+const INITIAL_SPEED = 150;   // ms per tick at score 0
+const SPEED_INCREMENT = 3;   // ms shaved off per point scored
+const MIN_SPEED = 50;        // ms — fastest the game can run
+const MAX_ATTEMPTS = GRID_SIZE * GRID_SIZE * 2; // loop-guard for getRandomPosition
 
+/**
+ * Pick a random grid cell not occupied by the snake or any other food.
+ * Throws if no free cell can be found within MAX_ATTEMPTS tries.
+ */
 const getRandomPosition = (snake: Position[], otherFoods: Position[]): Position => {
   let pos: Position;
+  let attempts = 0;
   do {
     pos = {
       x: Math.floor(Math.random() * GRID_SIZE),
       y: Math.floor(Math.random() * GRID_SIZE),
     };
+    if (++attempts > MAX_ATTEMPTS) {
+      throw new Error("getRandomPosition: board is full");
+    }
   } while (
     snake.some((s) => s.x === pos.x && s.y === pos.y) ||
     otherFoods.some((f) => f.x === pos.x && f.y === pos.y)
@@ -30,6 +47,9 @@ const getRandomPosition = (snake: Position[], otherFoods: Position[]): Position 
   return pos;
 };
 
+/**
+ * Spawn one food tile per brand at positions that don't overlap the initial snake.
+ */
 const makeInitialFoods = (snake: Position[]): FoodItem[] => {
   const foods: FoodItem[] = [];
   for (const brand of BRANDS) {
@@ -39,6 +59,10 @@ const makeInitialFoods = (snake: Position[]): FoodItem[] => {
   return foods;
 };
 
+/**
+ * Core game-loop hook. Returns all state and control callbacks needed to
+ * render and drive the snake game.
+ */
 export const useSnakeGame = () => {
   const [snake, setSnake] = useState<Position[]>([{ x: 10, y: 10 }]);
   const [foods, setFoods] = useState<FoodItem[]>(() =>
@@ -104,7 +128,8 @@ export const useSnakeGame = () => {
   useEffect(() => {
     if (!isRunning) return;
 
-    const speed = Math.max(50, INITIAL_SPEED - scoreRef.current * SPEED_INCREMENT);
+    // speed recomputed each time score changes
+    const speed = Math.max(MIN_SPEED, INITIAL_SPEED - score * SPEED_INCREMENT);
 
     const interval = setInterval(() => {
       const currentSnake = snakeRef.current;
@@ -164,7 +189,7 @@ export const useSnakeGame = () => {
     }, speed);
 
     return () => clearInterval(interval);
-  }, [isRunning]);
+  }, [isRunning, score]);
 
   return {
     snake,
