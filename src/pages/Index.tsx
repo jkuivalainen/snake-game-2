@@ -1,6 +1,7 @@
 import { useSnakeGame } from "@/hooks/useSnakeGame";
 import GameBoard from "@/components/GameBoard";
 import MobileControls from "@/components/MobileControls";
+import tuomasPng from "/tuomas.png?url";
 
 const Index = () => {
   const {
@@ -27,7 +28,7 @@ const Index = () => {
           style={{ animation: 'tuomas-flash 0.8s steps(1) forwards' }}
         >
           <img
-            src="/tuomas.png"
+            src={tuomasPng}
             alt="Tuomas"
             style={{ maxWidth: '60vw', maxHeight: '60vh', objectFit: 'contain' }}
           />
