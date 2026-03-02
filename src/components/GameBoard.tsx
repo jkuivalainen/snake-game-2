@@ -1,5 +1,6 @@
 import React from "react";
 import type { FoodItem } from "@/hooks/useSnakeGame";
+import tuomasPng from "/tuomas.png?url";
 
 type Position = { x: number; y: number };
 
@@ -7,6 +8,7 @@ interface GameBoardProps {
   snake: Position[];
   foods: FoodItem[];
   gridSize: number;
+  milestoneFlash: boolean;
 }
 
 const CELL_SIZE = 20;
@@ -15,7 +17,7 @@ const CELL_SIZE = 20;
  * Renders the snake game board: grid lines (via CSS background),
  * snake segments, and brand food tiles.
  */
-const GameBoard: React.FC<GameBoardProps> = ({ snake, foods, gridSize }) => {
+const GameBoard: React.FC<GameBoardProps> = ({ snake, foods, gridSize, milestoneFlash }) => {
   const boardSize = gridSize * CELL_SIZE;
 
   return (
@@ -50,6 +52,20 @@ const GameBoard: React.FC<GameBoardProps> = ({ snake, foods, gridSize }) => {
           }}
         />
       ))}
+
+      {/* Tuomas milestone flash — covers the game area only */}
+      {milestoneFlash && (
+        <div
+          className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"
+          style={{ animation: 'tuomas-flash 0.8s steps(1) forwards' }}
+        >
+          <img
+            src={tuomasPng}
+            alt="Tuomas"
+            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+          />
+        </div>
+      )}
 
       {/* Brand food tiles */}
       {foods.map((f) => (

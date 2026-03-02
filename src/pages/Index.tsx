@@ -1,7 +1,6 @@
 import { useSnakeGame } from "@/hooks/useSnakeGame";
 import GameBoard from "@/components/GameBoard";
 import MobileControls from "@/components/MobileControls";
-import tuomasPng from "/tuomas.png?url";
 
 const Index = () => {
   const {
@@ -21,19 +20,6 @@ const Index = () => {
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen gap-6 px-4 py-8 select-none">
-      {/* Tuomas milestone flash overlay — triggered every 5 points */}
-      {milestoneFlash && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
-          style={{ animation: 'tuomas-flash 0.8s steps(1) forwards' }}
-        >
-          <img
-            src={tuomasPng}
-            alt="Tuomas"
-            style={{ maxWidth: '60vw', maxHeight: '60vh', objectFit: 'contain' }}
-          />
-        </div>
-      )}
       <div className="flex flex-col items-center gap-0.5">
         <div style={{ border: '2.5px solid #e5e5e5', padding: '3px 8px' }}>
           <span style={{ fontSize: '0.85rem', fontWeight: 900, letterSpacing: '0.35em' }}>
@@ -61,7 +47,7 @@ const Index = () => {
         </div>
       </div>
 
-      <GameBoard snake={snake} foods={foods} gridSize={gridSize} />
+      <GameBoard snake={snake} foods={foods} gridSize={gridSize} milestoneFlash={milestoneFlash} />
 
       {!isRunning && (
         <button
